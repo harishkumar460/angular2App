@@ -1,0 +1,57 @@
+
+@import '../../../styles.less';
+.header {
+    background-color: #0eda0e;
+    color: white;
+    padding: 1px 0px;
+    text-align: center;
+    p {
+      font-size: 18px; 
+      .mobiles({font-size: 16px;});
+    }
+}
+.footer {
+   .header();
+   bottom: 0;
+   position: absolute;
+   width: 100%;
+   padding: 0px;
+   p {
+     font-size: 14px;
+     .mobiles({font-size: 13px;});
+   } 
+}
+
+ul.options-list {
+    padding: 0;
+    margin: 30px 60px; 
+    .icon{
+       margin-right: 10px;
+       font-size: 25px; 
+    }
+    .option-label {
+      display: inline-block;
+      vertical-align: super;
+      font-size: 16px;
+    }
+    .align-right {
+      float: right;  
+    }
+    .mobiles({
+        padding:0px;
+        margin: 0px; 
+    });
+    li{
+        padding: 15px 20px;
+        border: solid 1px lightgrey;
+        list-style: none;
+        border-bottom: none;
+        cursor: pointer; 
+    }
+    li:hover {
+      border:solid 1px;  
+    }
+    li:last-child{
+        border-bottom: solid 1px lightgrey;  
+    } 
+}

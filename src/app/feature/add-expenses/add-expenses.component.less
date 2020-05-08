@@ -1,0 +1,54 @@
+
+@import '../../../styles.less';
+.header {
+    background-color: #0eda0e;
+    color: white;
+    padding: 1px 0px;
+    text-align: center;
+    p {
+      font-size: 18px; 
+      .mobiles({font-size: 16px;});
+    }
+    .home {
+     float: left;
+     font-size: 25px;
+     margin: 8px 10px;
+    }
+}
+.list-container-edit{
+    .mobiles({margin-left: 10px});
+    .row {
+      max-width: 100%;  
+    }
+    .edit-form {
+     position: absolute;
+     max-height: 90%;
+     overflow-y: auto;
+     overflow-x: hidden;   
+     .mobiles({max-width: 100%;max-height: 85vh;});
+    .col {
+       text-align: center; 
+    }
+    input {
+     width: 100px;
+     margin-left: 7px;  
+    }
+    .icon-align-right {
+        .mobiles(.align-right()); 
+    }
+  } 
+ }
+.tabs-panel {
+   .header();
+   bottom: 0;
+   position: absolute;
+   width: 100%;
+   padding: 4px 0px;
+   margin-left:0px;
+   font-size: 25px;
+   .add-new {
+    font-size: 18px;
+    vertical-align: text-top;
+    margin-left: 5px;  
+   } 
+}
