@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { DbService } from 'src/app/services/db.service';
+import { CommonService } from 'src/app/services/common.service';
 
 @Component({
   selector: 'app-add-expenses',
@@ -10,12 +11,13 @@ import { DbService } from 'src/app/services/db.service';
 export class AddExpensesComponent implements OnInit {
 
   currentDate: string;
-
+  actualDate: Date;
   expenseSet: any;
-  constructor(private router: Router,private dbService: DbService) { }
+  constructor(private router: Router,private dbService: DbService,
+    private commonService: CommonService) { }
  
   ngOnInit(): void {
-   this.currentDate = this.getCurrentDate();
+   this.currentDate = this.getCurrentDate(new Date());
    this.expenseSet  = [this.getExpenseTemplate()];  
   }
   private getExpenseTemplate() {
@@ -26,8 +28,7 @@ export class AddExpensesComponent implements OnInit {
     this.expenseSet.push(this.getExpenseTemplate()); 
   }
 
-  getCurrentDate() {
-   let date = new Date();
+  getCurrentDate(date: Date) {
    let month = date.getMonth()+1;
    return (date.getDate()<10?'0'+date.getDate():date.getDate()) +'/'+(month<10?'0'+month:month)+'/'+date.getFullYear(); 
   }
@@ -68,31 +69,30 @@ export class AddExpensesComponent implements OnInit {
   } 
 
   fetchDetails() {
-    // let defaults=[];
-    // if(commonService.selectedExpenseSet.length){
-    // $scope.expenseSet=angular.copy(commonService.selectedExpenseSet);
-    // actualDate=new Date(angular.copy(commonService.selectedDay));
-    // $scope.selectedDate=showCurrentDate(actualDate);
-    // commonService.selectedExpenseSet=[];
-    // commonService.selectedDay='';
-    // return;
-    //   }else if(commonService.selectedDay){
-    // actualDate=new Date(angular.copy(commonService.selectedDay));
-    // $scope.selectedDate=showCurrentDate(actualDate);
-    // commonService.selectedDay='';
-    //   } 
-    //   dbService.openIndexDB($scope.selectedDate,{action:'read',searchBy:'key'},function(status,dataSet){
-    // if(status){
-    //   console.log('dataSet '+JSON.stringify(dataSet)); 
-    //   // plugins.showToast('Information fetched successfully!');
-    //     $scope.expenseSet=dataSet && dataSet.expenseSet?dataSet.expenseSet:(defaults?defaults:[]);
-    //     checkDefaults();
-    //     $scope.$apply();
-    //     console.log('actual '+JSON.stringify($scope.expenseSet));
-    // }else{
-    //     plugins.showToast('Error in data fetch operation!');
-    // }
-    //     });
-  }
-
+    let defaults=[];
+     if(this.commonService.selectedExpenseSet.length){
+      this.expenseSet = [...this.commonService.selectedExpenseSet];
+      this.actualDate = new Date({...this.commonService.selectedDay});
+      this.currentDate = this.getCurrentDate(this.actualDate);
+      this.commonService.selectedExpenseSet=[];
+      this.commonService.selectedDay='';
+      return;
+    }else if(this.commonService.selectedDay){
+      this.actualDate = new Date({...this.commonService.selectedDay});
+      this.currentDate = this.getCurrentDate(this.actualDate);
+      this.commonService.selectedDay='';
+      } 
+    this.dbService.openIndexDB(this.currentDate,{action:'read',searchBy:'key'},function(status,dataSet){
+     if (status) {
+      console.log('dataSet '+JSON.stringify(dataSet)); 
+      // plugins.showToast('Information fetched successfully!');
+      this.expenseSet=dataSet && dataSet.expenseSet?dataSet.expenseSet:(defaults?defaults:[]);
+      this.checkDefaults();
+      console.log('actual '+JSON.stringify(this.expenseSet));
+     } else {
+        // plugins.showToast('Error in data fetch operation!');
+        alert('Error in data fetch operation!');
+      }
+      });
+    }
 }

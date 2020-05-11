@@ -5,7 +5,8 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class CommonService{
-
+  selectedExpenseSet: [];
+  selectedDay: any;
   constructor(private http: HttpClient) { }
   getApi() { 
    this.http.get('https://shiv-app.herokuapp.com/login-page-content').subscribe(res=> {
