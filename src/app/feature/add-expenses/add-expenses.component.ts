@@ -17,8 +17,10 @@ export class AddExpensesComponent implements OnInit {
     private commonService: CommonService) { }
  
   ngOnInit(): void {
-   this.currentDate = this.getCurrentDate(new Date());
-   this.expenseSet  = [this.getExpenseTemplate()];  
+   this.actualDate = new Date();
+   this.currentDate = this.getCurrentDate(this.actualDate);
+   this.expenseSet  = [this.getExpenseTemplate()];
+   this.fetchDetails();  
   }
   private getExpenseTemplate() {
    return {id: '', name: '', amount: 0, defaults: false, saved: false }

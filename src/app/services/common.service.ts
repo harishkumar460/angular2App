@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class CommonService{
-  selectedExpenseSet: [];
+  selectedExpenseSet: [] = [];
   selectedDay: any;
   constructor(private http: HttpClient) { }
   getApi() { 
