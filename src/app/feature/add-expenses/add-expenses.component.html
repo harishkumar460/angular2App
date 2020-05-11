@@ -11,10 +11,10 @@
    <div class="edit-form">
 	 <div class="row m-t-10" *ngFor="let expense of expenseSet; let i=index">
 		<div class="col col-4">
-		  <input type="text" ([ngModel])="expense.name"> 
+		  <input type="text" [(ngModel)]="expense.name" [ngModelOptions]="{standalone: true}"> 
 		</div>
 		<div class="col col-3">
-		  <input type="number" ([ngModel])="expense.amount"> 
+		  <input type="number" [(ngModel)]="expense.amount" [ngModelOptions]="{standalone: true}"> 
 		</div>
 		<div class="col col-3">
 			<span class="fa fa-trash icon-align-right" (click)="deleteExpense(i)"></span>
@@ -24,20 +24,21 @@
 		</div>
     </div>
   </div>
-</div>    
+</div>
+<input type="date" #datePicker [(ngModel)]="selectedDay" (change) = "setSelectedDay()" hidden/>     
  <div class="tabs-panel row">
- <div class="col col-1"><span class="fa fa-caret-left"></span></div>
+ <div class="col col-1"><span (click) = "prevDate()" class="fa fa-caret-left"></span></div>
  <div class="col col-3">
   <span (click)="addNewExpense()" class="fa fa-plus-circle"></span> 
   <span class="add-new" [textContent]="'Add'"></span>
  </div>
  <div class="col col-4">
-    <span class="fa fa-check"></span> 
+    <span class="fa fa-check" (click)="storeExpense()"></span> 
     <span class="add-new" [textContent]="'Save'"></span>  
  </div>
  <div class="col col-3">
-    <span class="fa fa-calendar"></span> 
-    <span class="add-new" [textContent]="'Day'"></span>   
+    <span (click) = "openDatePicker()" class="fa fa-calendar"></span> 
+    <span  class="add-new" [textContent]="'Day'"></span>   
  </div>
- <div class="col col-1 p-l-0"><span class="fa fa-caret-right"></span></div>
+ <div class="col col-1 p-l-0"><span (click) = "nextDate()" class="fa fa-caret-right"></span></div>
 </div>

@@ -24,4 +24,12 @@ export class CommonService{
     ];
     return list;
   }
+
+  getTotalAmount(expenseSet: Array<any>) {
+    let totalAmount = 0;
+    expenseSet.forEach((expense) => {
+     totalAmount += expense.amount;
+    });
+    return totalAmount;
+   }
 }

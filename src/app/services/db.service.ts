@@ -27,17 +27,18 @@ export class DbService {
   createDatabase() {
     const request = window.indexedDB.open('expenseDB', 4.1);
     request.onupgradeneeded = (event) => {
-      var db = event.target;
+      var db = request.result;
       var objectStore = this.manageObjectStore(db,'',false);
       objectStore.transaction.oncomplete = ()=> {
-         // plugins.showToast('Database created!'); 
+		 // plugins.showToast('Database created!'); 
+		 console.log('Database created!');
       }
     } 
   }
 
   manageObjectStore(db,action,dbExist) {
 		let objectStore;
-		if (dbExist) {
+		if (dbExist && db.objectStoreNames.contains('expenses')) {
 		objectStore = db.transaction(['expenses']).objectStore('expenses');
 		}
 		else {
@@ -96,14 +97,14 @@ export class DbService {
 		
 		request.onsuccess = function(event) {
 		    const requestUpdate = data.totalAmount?objectStore.put(data):objectStore.delete(data.date);
-		    requestUpdate.onerror = function(event) {
+		    requestUpdate.onerror = (event) => {
 			this.recordsStatusHandler(callback,false,objectStore);
 		    };
-		    requestUpdate.onsuccess = function(event) {
+		    requestUpdate.onsuccess = (event)=> {
 			this.recordsStatusHandler(callback,true,objectStore); 
 		    };
 		};
-		request.onerror = function(event) {
+		request.onerror = (event)=> {
 		    const addRequest=objectStore.add(data);
 		    addRequest.onsuccess=function(){
 			this.recordsStatusHandler(callback,true,objectStore);  
