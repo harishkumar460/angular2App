@@ -16,3 +16,15 @@ body {
 .p-l-0 {
   padding-left: 0px;
 }
+.modal-height {
+  .modal-dialog {
+    margin:0;
+    .modal-content{
+      height: 100vh;
+    }
+  }
+}
+::ng-deep .modal-layout { 
+  .mobiles(.modal-height());
+  
+}

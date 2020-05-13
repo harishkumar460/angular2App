@@ -1,7 +1,8 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { DbService } from 'src/app/services/db.service';
 import { CommonService } from 'src/app/services/common.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-add-expenses',
@@ -15,10 +16,11 @@ export class AddExpensesComponent implements OnInit {
   expenseSet: any;
   selectedDay: Date;
   constructor(private router: Router,private dbService: DbService,
-    private commonService: CommonService) { }
+    private commonService: CommonService,
+    private modalService: NgbModal) { }
 
   @ViewChild('datePicker', {static:false, read:ElementRef}) datePicker: ElementRef;
-
+  @ViewChild('confirmationModal', {static:false, read:TemplateRef}) confirmationModal : TemplateRef<any>;
   ngOnInit(): void {
    this.actualDate = new Date();
    this.currentDate = this.getCurrentDate(this.actualDate);
@@ -146,12 +148,9 @@ export class AddExpensesComponent implements OnInit {
 
   deleteExpense(index): void {
   if(this.expenseSet[index].saved){
-   //commonService.showConfirmModal(function(res){
-  //if(res){
-      this.expenseSet.splice(index,1);
-     // this.storeExpense();
- // } 
-  //    });
+      this.modalService.open(this.confirmationModal, 
+        {backdrop: 'static',windowClass: 'modal-layout'});
+    //this.expenseSet.splice(index,1);
    } else {
     this.expenseSet.splice(index,1);  
       }

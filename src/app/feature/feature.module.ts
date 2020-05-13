@@ -5,8 +5,7 @@ import { SecondComponent } from './second/second.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { AddExpensesComponent } from './add-expenses/add-expenses.component';
-
-
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [FirstComponent, SecondComponent, AddExpensesComponent],
@@ -14,7 +13,8 @@ import { AddExpensesComponent } from './add-expenses/add-expenses.component';
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
-    RouterModule
+    RouterModule,
+    NgbModule
   ],
   exports: [SecondComponent]
 })

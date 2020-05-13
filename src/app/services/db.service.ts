@@ -95,7 +95,7 @@ export class DbService {
 		console.log('data record '+JSON.stringify(data));
 		const request = objectStore.get(data.date);
 		
-		request.onsuccess = function(event) {
+		request.onsuccess = (event) => {
 		    const requestUpdate = data.totalAmount?objectStore.put(data):objectStore.delete(data.date);
 		    requestUpdate.onerror = (event) => {
 			this.recordsStatusHandler(callback,false,objectStore);
@@ -106,10 +106,10 @@ export class DbService {
 		};
 		request.onerror = (event)=> {
 		    const addRequest=objectStore.add(data);
-		    addRequest.onsuccess=function(){
+		    addRequest.onsuccess = ()=> {
 			this.recordsStatusHandler(callback,true,objectStore);  
 		      };
-		      addRequest.onerror=function(){
+		      addRequest.onerror = () => {
 		       this.recordsStatusHandler(callback,false,objectStore);  
 		      }; 
 		};
