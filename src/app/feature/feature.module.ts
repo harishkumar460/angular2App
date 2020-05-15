@@ -6,9 +6,13 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { AddExpensesComponent } from './add-expenses/add-expenses.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ViewDailyExpensesComponent } from './view-daily-expenses/view-daily-expenses.component';
 
 @NgModule({
-  declarations: [FirstComponent, SecondComponent, AddExpensesComponent],
+  declarations: [FirstComponent, 
+                 SecondComponent, 
+                 AddExpensesComponent, 
+                 ViewDailyExpensesComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,

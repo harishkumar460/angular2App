@@ -18,13 +18,49 @@ body {
 }
 .modal-height {
   .modal-dialog {
-    margin:0;
+    .mobiles({margin:0});
     .modal-content{
-      height: 100vh;
+      height: 340px;
+      .mobiles({height: 100vh;});
     }
   }
 }
 ::ng-deep .modal-layout { 
-  .mobiles(.modal-height());
-  
+  .modal-height();
+}
+
+.hide-xs {
+  .mobiles({display: none});
+}
+
+.header {
+  background-color: @std-green;
+  color: @std-white;
+  padding: 1px 0px;
+  text-align: center;
+  p {
+    font-size: 18px; 
+    .mobiles({font-size: 16px;});
+  }
+  .home {
+   float: left;
+   font-size: 25px;
+   margin: 8px 10px;
+  }
+}
+
+.tabs-panel {
+  .header();
+  bottom: 0;
+  position: absolute;
+  width: 100%;
+  padding: 4px 0px;
+  margin-left:0px;
+  font-size: 25px;
+  .add-new {
+   font-size: 18px;
+   vertical-align: text-top;
+   margin-left: 5px;
+   margin-right: 5px;  
+  } 
 }

@@ -4,19 +4,19 @@
 <div class="list-container-edit">
 	 <div class="row">
 		<div class="col col-4">Expense Name</div>
-		<div class="col col-3">Amount</div>
-		<div class="col col-3">Remove</div>
+		<div class="col col-4 col-sm-4 col-md-3 col-lg-3 col-xl-3">Amount</div>
+		<div class="col col-2">Remove</div>
 		<div class="col col-2">Default</div>
     </div>
    <div class="edit-form">
 	 <div class="row m-t-10" *ngFor="let expense of expenseSet; let i=index">
-		<div class="col col-4">
+		<div class="col col-4 ">
 		  <input type="text" [(ngModel)]="expense.name" [ngModelOptions]="{standalone: true}"> 
 		</div>
-		<div class="col col-3">
+		<div class="col col-4 col-sm-4 col-md-3 col-lg-3 col-xl-3">
 		  <input type="number" [(ngModel)]="expense.amount" [ngModelOptions]="{standalone: true}"> 
 		</div>
-		<div class="col col-3">
+		<div class="col col-2">
 			<span class="fa fa-trash icon-align-right" (click)="deleteExpense(i)"></span>
 		</div>
 		<div class="col col-2">
@@ -45,14 +45,15 @@
 <ng-template #confirmationModal>
 <div class="confirmation-modal">
  <div class="header">
-  <p>Deleting a Record</p>
+  <p>Deleting an Expense</p>
  </div>
  <div class="content">
  <p>Are you sure?</p>
+ <p class="message-desc">This entry will be deleted permanently!</p>
  </div>
   <div class="footer">
-   <button [textContent]="'Yes'" class="btn-primary"></button>
-   <button [textContent]="'No'" class="btn-secondary"></button>	 
+   <button [textContent]="'Yes'" (click)="confirm(true)" class="btn-primary"></button>
+   <button [textContent]="'No'" (click)="confirm(false)" class="btn-secondary"></button>	 
  </div>
 </div> 	
 </ng-template>

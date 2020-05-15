@@ -15,6 +15,7 @@ export class AddExpensesComponent implements OnInit {
   actualDate: Date;
   expenseSet: any;
   selectedDay: Date;
+  confirm: (confirmed: Boolean) => void;
   constructor(private router: Router,private dbService: DbService,
     private commonService: CommonService,
     private modalService: NgbModal) { }
@@ -147,13 +148,19 @@ export class AddExpensesComponent implements OnInit {
   }
 
   deleteExpense(index): void {
-  if(this.expenseSet[index].saved){
-      this.modalService.open(this.confirmationModal, 
-        {backdrop: 'static',windowClass: 'modal-layout'});
-    //this.expenseSet.splice(index,1);
+  if (this.expenseSet[index].saved) {
+    const modalInstance = this.modalService.open(this.confirmationModal, 
+    {backdrop: 'static',windowClass: 'modal-layout'});
+    this.confirm = (confirmed: Boolean)=> {
+      modalInstance.dismiss();
+      if (confirmed) {
+       this.expenseSet.splice(index,1);
+       this.storeExpense();
+      }
+    }
    } else {
     this.expenseSet.splice(index,1);  
-      }
+    }
   } 
 
   fetchDetails() {

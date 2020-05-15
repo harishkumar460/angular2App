@@ -1,0 +1,17 @@
+<div class="header">
+    <span class="fa fa-home home"></span>  <p [textContent]="'currentDate'"></p>
+</div>
+<div class="tabs-panel row">
+    <div class="col col-3">
+      <span (click) = "prevMonth()" class="fa fa-caret-left"></span>
+      <span class="add-new" [textContent]="'Prev'"></span>
+    </div>
+    <div class="col col-6">
+       <span (click) = "selectMonth()" class="fa fa-calendar"></span> 
+       <span  class="add-new" [textContent]="'Month'"></span>   
+    </div>
+    <div class="col col-3 p-l-0">
+       <span  class="add-new" [textContent]="'Next'"></span>
+       <span (click) = "nextMonth()" class="fa fa-caret-right"></span>
+    </div>
+</div>
