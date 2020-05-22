@@ -15,6 +15,7 @@ export class AddExpensesComponent implements OnInit {
   actualDate: Date;
   expenseSet: any;
   selectedDay: Date;
+  toggle: boolean = true;
   confirm: (confirmed: Boolean) => void;
   constructor(private router: Router,private dbService: DbService,
     private commonService: CommonService,
@@ -64,6 +65,7 @@ export class AddExpensesComponent implements OnInit {
 
   openDatePicker() {
       console.log('clicked date');
+      this.toggle = !this.toggle;
       //document.getElementById(id).click();
       this.datePicker.nativeElement.click();
   }

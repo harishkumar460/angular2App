@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener, HostBinding } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonService } from 'src/app/services/common.service';
@@ -18,10 +18,17 @@ export class FirstComponent implements OnInit {
     this.createForm();
     this.optionsList = this.commonService.getOptionsList();
   }
+  @HostListener('click')
+  onClick(){
+   console.log('host element clicked');
+  };
+  @HostBinding('style.border') hostStyle; 
   
   ngOnInit() {
     this.dbService.createDatabase();
     this.commonService.selectedExpenseSet = [];
+    this.hostStyle='solid 2px';
+    console.log('host style '+this.hostStyle);
   }
   createForm() {
    this.testForm = this.formBuilder.group({

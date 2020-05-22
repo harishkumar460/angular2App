@@ -14,7 +14,7 @@
 		  <input type="text" [(ngModel)]="expense.name" [ngModelOptions]="{standalone: true}"> 
 		</div>
 		<div class="col col-4 col-sm-4 col-md-3 col-lg-3 col-xl-3">
-		  <input type="number" [(ngModel)]="expense.amount" [ngModelOptions]="{standalone: true}"> 
+		  <input type="number" *appInput="toggle" [(ngModel)]="expense.amount" [ngModelOptions]="{standalone: true}"> 
 		</div>
 		<div class="col col-2">
 			<span class="fa fa-trash icon-align-right" (click)="deleteExpense(i)"></span>

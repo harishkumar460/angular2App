@@ -9,8 +9,8 @@ export class SecondComponent implements OnInit {
 
   constructor() { }
   @ContentChild('contentSection') contentSec : ElementRef; 
-  ngOnInit() {
-  }
+   ngOnInit() {
+   }
   ngAfterContentInit() {
    console.log('content is '+this.contentSec); 
   }

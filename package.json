@@ -5,7 +5,7 @@
     "ng": "ng",
     "serve": "ng serve",
     "build": "ng build",
-    "test": "ng test",
+    "test": "ng test --no-watch --code-coverage",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
@@ -41,7 +41,9 @@
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~4.1.0",
     "karma-chrome-launcher": "~2.2.0",
+    "karma-coverage": "^2.0.2",
     "karma-coverage-istanbul-reporter": "~2.0.1",
+    "karma-html-reporter": "^0.2.7",
     "karma-jasmine": "~2.0.1",
     "karma-jasmine-html-reporter": "^1.4.0",
     "less": "^3.11.1",

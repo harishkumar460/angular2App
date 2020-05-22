@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
 import { AddExpensesComponent } from './add-expenses/add-expenses.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ViewDailyExpensesComponent } from './view-daily-expenses/view-daily-expenses.component';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [FirstComponent, 
@@ -18,7 +19,8 @@ import { ViewDailyExpensesComponent } from './view-daily-expenses/view-daily-exp
     ReactiveFormsModule,
     FormsModule,
     RouterModule,
-    NgbModule
+    NgbModule,
+    SharedModule
   ],
   exports: [SecondComponent]
 })
