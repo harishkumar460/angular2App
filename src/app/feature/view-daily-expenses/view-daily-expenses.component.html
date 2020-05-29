@@ -1,6 +1,13 @@
 <div class="header">
     <span class="fa fa-home home"></span>  <p [textContent]="'currentDate'"></p>
 </div>
+<select [(ngModel)]="chartType" (change)="switchChart()">
+ <option>bar</option>
+ <option>column</option> 
+</select>
+<div id="d3-container">
+  
+</div>
 <div class="tabs-panel row">
     <div class="col col-3">
       <span (click) = "prevMonth()" class="fa fa-caret-left"></span>
