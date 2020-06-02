@@ -17,7 +17,8 @@ export class ChartService {
    .attr("font-size", "24px")
    .text(chartTitle)
   }
-  createColumnChart(data, containerBlock) {
+
+  generateColumnChart(data, containerBlock, config) {
     let container = select(containerBlock);
     container.html('');
     let containerWidth = container.node().clientWidth;
@@ -27,7 +28,7 @@ export class ChartService {
     let width = containerWidth-margin, height = containerHeight-margin, tooltip;
     let xScale = d3.scaleBand().range([0, width]).padding(0.4),
         yScale = d3.scaleLinear().range([height, 0]);
-    this.createChartTitle(svgChart,'Yearly Expenses Chart'); 
+    this.createChartTitle(svgChart,config.title); 
     let g = svgChart.append("g")
             .attr("transform", "translate(" + (isMobile? 30 : 100) + "," + (isMobile? -20 :100) + ")");
 
@@ -38,12 +39,15 @@ export class ChartService {
     .call(d3.axisBottom(xScale)).append("text")
     .attr("y", height - 250)
     .attr("x", width - 100)
-    .attr("text-anchor", "end")
     .attr("stroke", "black")
-    .text("Year");
+    .attr("font-size", "18px")
+    .text(config.xAxisLabel);
     g.append("g").call(d3.axisLeft(yScale).tickFormat(function(d){
              return "$" + d;
-         }).ticks(10));
+      }).ticks(10))
+      .append("text").attr("transform", "rotate(-90)").attr("y", 20)
+      .attr("dy", "-5.1em").attr("stroke", "black")
+      .attr("font-size", "18px").text(config.yAxisLabel);
     
     g.selectAll(".bar").data(data).enter().append('text')
     .attr('x', (d)=> { return xScale(d.year);})
@@ -82,7 +86,7 @@ export class ChartService {
       });
   }
 
-  createBarChart(data, containerBlock) {
+  generateBarChart(data, containerBlock, config) {
     let container = select(containerBlock);
     container.html('');
     let containerWidth = container.node().clientWidth;
@@ -103,8 +107,17 @@ export class ChartService {
     g.append("g").attr("transform", "translate(0," + height + ")")
     .call(d3.axisBottom(xScale).tickFormat(function(d){
       return "$" + d;
-  }).ticks(10));
-    g.append("g").call(d3.axisLeft(yScale));
+  }).ticks(10))
+  .append("text")
+    .attr("y", height - 250)
+    .attr("x", width - 100)
+    .attr("stroke", "black")
+    .attr("font-size", "18px")
+    .text(config.xAxisLabel);
+    g.append("g").call(d3.axisLeft(yScale))
+    .append("text").attr("transform", "rotate(-90)").attr("y", 20)
+      .attr("dy", "-5.1em").attr("stroke", "black")
+      .attr("font-size", "18px").text(config.yAxisLabel);
     
     g.selectAll(".bar").data(data).enter().append('text')
     .attr('x', (d)=> { return xScale(d.value+3);})
@@ -143,4 +156,56 @@ export class ChartService {
         tooltip.style('display','none');
       });
   }
+
+  generatePieChart(data,containerBlock,config?) {
+    
+    let container = select(containerBlock);
+    container.html('');
+    let containerWidth = container.node().clientWidth;
+    let containerHeight = container.node().clientHeight;
+    let svgChart = container.append('svg').attr('width', containerWidth).attr('height',containerHeight);
+    const isMobile = containerWidth < 650, margin = isMobile ? 0: 200;
+    let width = containerWidth-margin, height = containerHeight-margin, 
+                tooltip, radius = Math.min(width, height) / 2;
+    let colors = ['#4daf4a','#377eb8','#ff7f00','#984ea3','#e41a1c'];
+    let sizes = {innerRadius: 0, outerRadius: radius};
+    let durations = {entryAnimation: 2000};
+    let generator = d3.pie().value(function(d) { 
+      return d.value; 
+   }).sort(null);
+    let chart = generator(data);
+    let arcs = svgChart.append("g").attr("transform", "translate(100, 100)")
+               .selectAll("path").data(chart).enter()
+               .append("path").style("fill", (d, i) => colors[i]);
+                
+    let angleInterpolation = d3.interpolate(generator.startAngle()(), generator.endAngle()());
+    let innerRadiusInterpolation = d3.interpolate(0, sizes.innerRadius);
+    let outerRadiusInterpolation = d3.interpolate(0, sizes.outerRadius);
+                
+    let arc = d3.arc();
+    arcs.transition().duration(durations.entryAnimation)
+    .attrTween("d", d => {
+                      let originalEnd = d.endAngle;
+                      return t => {
+                        let currentAngle = angleInterpolation(t);
+                        if (currentAngle < d.startAngle) {
+                          return "";
+                        }
+                
+                        d.endAngle = Math.min(currentAngle, originalEnd);
+                
+                        return arc(d);
+                      };
+              });
+                
+    svgChart.transition().duration(durations.entryAnimation)
+    .tween("arcRadii", () => {
+                      return t => arc
+                        .innerRadius(innerRadiusInterpolation(t))
+                        .outerRadius(outerRadiusInterpolation(t));
+    });          
+		
+  }
+
+
 }

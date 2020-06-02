@@ -19,6 +19,7 @@ export class ViewDailyExpensesComponent implements OnInit {
   noRecordsFound: boolean;
   chartType: string = 'bar';
   data: Array<any>;
+  chartConfig: any;
   constructor(private dbService: DbService,private chartService: ChartService) { }
 
   ngOnInit(): void {
@@ -33,6 +34,8 @@ export class ViewDailyExpensesComponent implements OnInit {
     {year:2025, value: 55},{year:2026, value: 105},
     {year:2027, value: 155},{year:2028, value: 305}];
     //this.chartService.createColumnChart(data2, '#d3-container');
+    this.chartConfig = {title:'Yearly Expenses Chart', xAxisLabel: 'Expense Years',
+                        yAxisLabel: 'Expenses amount'}
     this.switchChart();
     select(window).on('resize',()=> {
       this.switchChart();
@@ -42,15 +45,27 @@ export class ViewDailyExpensesComponent implements OnInit {
   switchChart() {
     const containerId = '#d3-container'; 
     select(containerId).html('');
-    if (this.chartType==='bar') {
-      this.chartService.createBarChart(this.data, containerId);
-    } else {
-      this.chartService.createColumnChart(this.data, containerId);
+    switch(this.chartType) {
+     case 'bar': {
+                  this.chartService.generateBarChart(this.data, containerId, this.chartConfig);
+                  break;
+                }
+     case 'column': {
+                  this.chartService.generateColumnChart(this.data, containerId, this.chartConfig);
+                  break;
+                   }
+     case 'pie':  {
+                  this.chartService.generatePieChart(this.data, containerId, this.chartConfig);
+                  break;
+                 }
+     default : { 
+                 this.chartService.generateColumnChart(this.data, containerId, this.chartConfig);
+             }                    
     }
   }
 
    createBarChart(data, chart = 'bar') {
-    const scaleFactor =10, barHeight=40;
+    const scaleFactor =10, barHeight = 40;
     const isBarChart = chart === 'bar';
     const scale = d3.scaleLinear().domain([d3.min(data), d3.max(data)]).range([50,460]);
     let svgChart = select('#d3-container').append('svg')
