@@ -17,7 +17,7 @@ export class ViewDailyExpensesComponent implements OnInit {
   chartData: any;
   commonChartData: any;
   noRecordsFound: boolean;
-  chartType: string = 'bar';
+  chartType: string = 'Bar';
   data: Array<any>;
   chartConfig: any;
   constructor(private dbService: DbService,private chartService: ChartService) { }
@@ -45,7 +45,8 @@ export class ViewDailyExpensesComponent implements OnInit {
   switchChart() {
     const containerId = '#d3-container'; 
     select(containerId).html('');
-    switch(this.chartType) {
+    const chartType = this.chartType.toLowerCase();
+    switch(chartType) {
      case 'bar': {
                   this.chartService.generateBarChart(this.data, containerId, this.chartConfig);
                   break;
@@ -58,6 +59,10 @@ export class ViewDailyExpensesComponent implements OnInit {
                   this.chartService.generatePieChart(this.data, containerId, this.chartConfig);
                   break;
                  }
+     case 'donut': {
+                  this.chartService.generateDonutChart(this.data, containerId, this.chartConfig);
+                  break;
+                }           
      default : { 
                  this.chartService.generateColumnChart(this.data, containerId, this.chartConfig);
              }                    

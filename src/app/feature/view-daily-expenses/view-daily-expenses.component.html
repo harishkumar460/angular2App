@@ -2,9 +2,10 @@
     <span class="fa fa-home home"></span>  <p [textContent]="'currentDate'"></p>
 </div>
 <select [(ngModel)]="chartType" (change)="switchChart()">
- <option>bar</option>
- <option>column</option>
- <option>pie</option> 
+ <option>Bar</option>
+ <option>Column</option>
+ <option>Pie</option>
+ <option>Donut</option> 
 </select>
 <div id="d3-container">
   
