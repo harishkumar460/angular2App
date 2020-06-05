@@ -32,4 +32,16 @@ export class CommonService{
     });
     return totalAmount;
    }
+
+   getChartData() {
+     return [{year:2011, expenses: 45},{year:2012, expenses: 47},
+      {year:2013, expenses: 50},{year:2014, expenses: 55},
+      {year:2015, expenses: 55},{year:2016, expenses: 50},
+      {year:2017, expenses: 55},{year:2018, expenses: 65},
+      {year:2019, expenses: 55},{year:2020, expenses: 75},
+      {year:2021, expenses: 55},{year:2022, expenses: 85},
+      {year:2023, expenses: 55},{year:2024, expenses: 95},
+      {year:2025, expenses: 55},{year:2026, expenses: 105},
+      {year:2027, expenses: 155},{year:2028, expenses: 305}];
+   }
 }

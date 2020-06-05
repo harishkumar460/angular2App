@@ -3,6 +3,7 @@ import { DbService } from 'src/app/services/db.service';
 import {select, selectAll} from 'd3-selection';
 import * as d3 from 'd3';
 import { ChartService } from 'src/app/services/chart.service';
+import { CommonService } from 'src/app/services/common.service';
 
 @Component({
   selector: 'app-view-daily-expenses',
@@ -12,108 +13,31 @@ import { ChartService } from 'src/app/services/chart.service';
 export class ViewDailyExpensesComponent implements OnInit {
 
   selectedDate: string;
-  expenseSet: Array<any>;
+  expenseset: Array<any>;
   totalAmount: number;
   chartData: any;
   commonChartData: any;
   noRecordsFound: boolean;
-  chartType: string = 'Bar';
+  chartType: string = 'column';
   data: Array<any>;
   chartConfig: any;
-  constructor(private dbService: DbService,private chartService: ChartService) { }
+  chartCategories: Array<string>;
+  constructor(private dbService: DbService,private chartService: ChartService,
+              private commonService: CommonService) { }
 
-  ngOnInit(): void {
-    
-   this.data = [{year:2011, value: 45},{year:2012, value: 47},
-    {year:2013, value: 50},{year:2014, value: 55},
-    {year:2015, value: 55},{year:2016, value: 50},
-    {year:2017, value: 55},{year:2018, value: 65},
-    {year:2019, value: 55},{year:2020, value: 75},
-    {year:2021, value: 55},{year:2022, value: 85},
-    {year:2023, value: 55},{year:2024, value: 95},
-    {year:2025, value: 55},{year:2026, value: 105},
-    {year:2027, value: 155},{year:2028, value: 305}];
-    //this.chartService.createColumnChart(data2, '#d3-container');
-    this.chartConfig = {title:'Yearly Expenses Chart', xAxisLabel: 'Expense Years',
+  ngOnInit(): void { 
+   this.data = this.commonService.getChartData();
+   this.chartCategories = this.chartService.getChartCategories();
+   this.chartConfig = {type:this.chartType, title:'Yearly expenses Chart', xAxisLabel: 'Expense Years',
                         yAxisLabel: 'Expenses amount'}
-    this.switchChart();
-    select(window).on('resize',()=> {
-      this.switchChart();
-    });
+   this.chartService.initChart('#d3-container', this.data, this.chartConfig);
   }
-
+   
   switchChart() {
-    const containerId = '#d3-container'; 
-    select(containerId).html('');
-    const chartType = this.chartType.toLowerCase();
-    switch(chartType) {
-     case 'bar': {
-                  this.chartService.generateBarChart(this.data, containerId, this.chartConfig);
-                  break;
-                }
-     case 'column': {
-                  this.chartService.generateColumnChart(this.data, containerId, this.chartConfig);
-                  break;
-                   }
-     case 'pie':  {
-                  this.chartService.generatePieChart(this.data, containerId, this.chartConfig);
-                  break;
-                 }
-     case 'donut': {
-                  this.chartService.generateDonutChart(this.data, containerId, this.chartConfig);
-                  break;
-                }           
-     default : { 
-                 this.chartService.generateColumnChart(this.data, containerId, this.chartConfig);
-             }                    
-    }
+    this.chartConfig.type = this.chartType;
+    this.chartService.initChart('#d3-container', this.data, this.chartConfig);
   }
-
-   createBarChart(data, chart = 'bar') {
-    const scaleFactor =10, barHeight = 40;
-    const isBarChart = chart === 'bar';
-    const scale = d3.scaleLinear().domain([d3.min(data), d3.max(data)]).range([50,460]);
-    let svgChart = select('#d3-container').append('svg')
-    .attr('width','500').attr('height', 2*barHeight * data.length);
-
-    let bar = svgChart.selectAll('g').data(data)
-    .enter().append('g').attr('transform', (d,i) => {
-      return 'translate(0,'+(i*barHeight+(6*i))+')';
-    });
-
-     bar.append('rect')
-     .attr('width', '20')
-     .attr('height', barHeight-1)
-     .attr('fill','orange')
-     .on('mouseover', function() {
-       select(this).attr('fill','green');
-     })
-     .on('mouseout', function(){
-       select(this).attr('fill','orange');
-     });
-
-     bar.append('text')
-     .attr('x', (d)=> {
-       return scale(d);
-     })
-     .attr('y', barHeight/2)
-     .attr('dy', '.35em')
-     .text((d)=> {return d;});
-     if (!isBarChart) {
-      svgChart.style('transform', 'rotate(-90deg)');
-      svgChart.selectAll('text').attr('transform', (d,i)=>{
-        return 'rotate(90 '+(scale(d)+5)+' 26)';
-      });
-     }
-     svgChart.selectAll('rect')
-     .transition()
-     .ease(d3.easeLinear)
-     .duration(1000)
-     .attr('width', (d)=>{
-      return scale(d);
-    });
-   }
-
+  
   prevMonth() {
 
   }
@@ -130,14 +54,14 @@ export class ViewDailyExpensesComponent implements OnInit {
   fetchDetails() {
     this.dbService.openIndexDB(this.selectedDate,{action:'read',searchBy:'key'},(status,dataSet)=>{
     if (status) {
-        this.expenseSet = dataSet && dataSet.expenseSet?dataSet.expenseSet:[];
+        this.expenseset = dataSet && dataSet.expenseset?dataSet.expenseset:[];
         this.totalAmount = dataSet?dataSet.totalAmount:0;
-       // this.chartData = this.chartService.prepareChartData(this.expenseSet);
+       // this.chartData = this.chartService.prepareChartData(this.expenseset);
        // this.commonChartData = this.chartService.commonChartData;
         console.log('chart data '+JSON.stringify(this.chartData));
         console.log('common chart data '+JSON.stringify(this.commonChartData));
-        this.noRecordsFound=this.expenseSet.length<1;
-        console.log('actual '+JSON.stringify(this.expenseSet));
+        this.noRecordsFound=this.expenseset.length<1;
+        console.log('actual '+JSON.stringify(this.expenseset));
     }else{
         //plugins.showToast('Error in data fetch operation!');
         alert('Error in data fetch operation!');
